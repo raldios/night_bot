@@ -59,10 +59,11 @@ class Bot(commands.Bot):
             else:
                 return json.load(in_file)
 
-    async def import_facts(self):
+    async def import_facts(self, facts_filename):
         guild = discord.utils.get(self.guilds, name=self.guild_name)
         katie_channel = discord.utils.get(guild.text_channels, id=764972790775939082)
-        with open('katie facts.txt', 'r', encoding="utf8") as file:
+
+        with open(facts_filename, 'r', encoding="utf8") as file:
             for line in file.readlines():
                 await katie_channel.send(line)
 
