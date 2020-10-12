@@ -1,19 +1,14 @@
 # Bot.py
 import logging
-import json
-from zoneinfo import ZoneInfo
-from datetime import datetime, timedelta
 import discord
-from discord.ext import commands, tasks
-from pathlib import Path
-import asyncio
+from discord.ext import commands
 
 from cogs.FactsCog import FactsCog
 
 
 class Bot(commands.Bot):
 
-    def __init__(self, token, guild_name, timezone, json_folder):
+    def __init__(self, token, guild_name):
         commands.Bot.__init__(self, ';')
 
         self.token = token
@@ -41,12 +36,12 @@ class Bot(commands.Bot):
         guild: discord.Guild = self.get_guild_from_name()
         return discord.utils.get(guild.channels, name=channel_name)
 
-    async def import_facts(self, facts_filename):
-        guild = discord.utils.get(self.guilds, name=self.guild_name)
-        katie_channel = discord.utils.get(guild.text_channels, id=764972790775939082)
+    def get_category_from_name(self, category_name):
+        guild: discord.Guild = self.get_guild_from_name()
+        return discord.utils.get(guild.categories, name=category_name)
 
-        with open(facts_filename, 'r', encoding="utf8") as file:
-            for line in file.readlines():
-                await katie_channel.send(line)
+    def get_text_channels_from_category_name(self, category_name):
+        category: discord.CategoryChannel = self.get_category_from_name(category_name)
+        return category.text_channels
 
 

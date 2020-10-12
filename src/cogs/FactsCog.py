@@ -19,35 +19,40 @@ class FactsCog(commands.Cog):
         self.bot = bot
         self.fact_ready = True
 
-    async def get_facts(self, fact_group_str: str):
-        channel = self.bot.get_channel_from_name(fact_group_str)
-        return await channel.history(limit=123).flatten()
+    def get_fact_channels(self):
+        return self.bot.get_text_channels_from_category_name('bot channels')
 
-    async def get_random_fact(self, fact_group_str: str):
-        messages = await self.get_facts(fact_group_str)
-        rand_index = randrange(0, len(messages) - 1)
-        return messages[rand_index].content
+    async def get_facts(self, fact_category: str):
+        channel = self.bot.get_channel_from_name(fact_category)
+        return await channel.history(limit=500).flatten()
+
+    async def get_random_fact(self, fact_category: str):
+        facts = await self.get_facts(fact_category)
+        rand_index = randrange(0, len(facts) - 1)
+        return facts[rand_index].content
+
+    def validate_fact_category(self, fact_category):
+        if fact_category is None: return False
+        bot_channels = self.get_fact_channels()
+        valid = False if len([x for x in bot_channels if x.name == fact_category]) < 1 else True
+        return valid
 
     @commands.command(name='getfact')
-    async def getfact(self, ctx: discord.ext.commands.Context, *args):
-        if len(args) < 1:
-            await ctx.send('Please provide a fact type. :)')
-        elif not self.fact_ready:
+    async def getfact(self, ctx: discord.ext.commands.Context, fact_category=None, *args):
+        if not self.fact_ready:
             await ctx.send('Please wait before trying again. :)')
+        elif not self.validate_fact_category(fact_category):
+            await ctx.send('Please provide a valid fact type. :)')
         else:
-            await ctx.send(await self.get_random_fact(args[0]))
+            await ctx.send(await self.get_random_fact(fact_category))
             self.fact_ready = False
             await sleep(WAIT_COOLDOWN)
             self.fact_ready = True
 
-    @commands.command(name='addfact')
-    async def addfact(self, ctx: discord.ext.commands.Context, *args):
-        fact_role = self.bot.get_role_from_name('fact adder')
-        if len(args) < 2:
-            await ctx.send('Please provide a fact.')
-        if fact_role not in ctx.author.roles:
-            await ctx.send('You are not allowed to do this. :)')
-
-        channel = self.bot.get_channel_from_name(args[0])
-        if channel is None: return
-        await channel.send(args[1])
+    @commands.command(name='factcount')
+    async def factcount(self, ctx: discord.ext.commands.Context, fact_category=None, *args):
+        if not self.validate_fact_category(fact_category):
+            await ctx.send('Please provide a valid fact type. :)')
+        else:
+            facts = await self.get_facts(fact_category)
+            await ctx.send(f'There are {len(facts)} {fact_category} facts!')

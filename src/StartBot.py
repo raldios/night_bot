@@ -11,4 +11,4 @@ init_logger(os.getenv('LOG_FILENAME'))
 TOKEN = os.getenv('DISCORD_TOKEN')
 GUILD = os.getenv('DISCORD_GUILD')
 
-client = Bot(TOKEN, GUILD, os.getenv('TIMEZONE'), os.getenv('JSON_FOLDER'))
+client = Bot(TOKEN, GUILD)
