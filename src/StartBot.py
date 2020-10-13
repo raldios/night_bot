@@ -1,11 +1,12 @@
 # StartBot.py
 import os
+from sys import argv
 from dotenv import load_dotenv
 
 from Bot import Bot
 from MyLogging import init_logger
 
-load_dotenv()
+load_dotenv(str(argv[1]))
 
 init_logger(os.getenv('LOG_FILENAME'))
 TOKEN = os.getenv('DISCORD_TOKEN')
