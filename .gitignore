@@ -1,7 +1,7 @@
 # My Ignores
 venv39/
 .idea/
-
+*.env
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
