@@ -1,13 +1,9 @@
 # FactsCog.py
 
 # imports
-import logging
-import json
 import discord
 from discord.ext import commands
-from pathlib import Path
 from random import randrange
-from datetime import datetime
 from asyncio import sleep
 
 WAIT_COOLDOWN = 60
@@ -22,12 +18,8 @@ class FactsCog(commands.Cog):
     def get_fact_channels(self):
         return self.bot.get_text_channels_from_category_name('bot channels')
 
-    async def get_facts(self, fact_category: str):
-        channel = self.bot.get_channel_from_name(fact_category)
-        return await channel.history(limit=500).flatten()
-
     async def get_random_fact(self, fact_category: str):
-        facts = await self.get_facts(fact_category)
+        facts = await self.bot.get_all_messages(fact_category)
         rand_index = randrange(0, len(facts) - 1)
         return facts[rand_index].content
 
@@ -54,5 +46,5 @@ class FactsCog(commands.Cog):
         if not self.validate_fact_category(fact_category):
             await ctx.send('Please provide a valid fact type. :)')
         else:
-            facts = await self.get_facts(fact_category)
+            facts = await self.bot.get_all_messages(fact_category)
             await ctx.send(f'There are {len(facts)} {fact_category} facts!')
