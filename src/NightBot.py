@@ -67,8 +67,8 @@ class NightBot(commands.Bot):
         member = self.get_guild_from_name().get_member(payload.user_id)
 
         role = self.get_role_from_name(message.content)
-        await member.add_roles(role)
-        logging.info(f'role {message.content} added to {member.nick}')
+        await member.remove_roles(role)
+        logging.info(f'role {message.content} removed from {member.nick}')
 
     async def get_bot_init_pairs(self):
         init_pairs = dict()
