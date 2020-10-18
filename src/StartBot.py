@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 from NightBot import NightBot
 from MyLogging import init_logger
 
-load_dotenv()
+load_dotenv('dev.env')
 
 init_logger(os.getenv('LOG_FILENAME'))
 TOKEN = os.getenv('DISCORD_TOKEN')
