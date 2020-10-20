@@ -81,8 +81,11 @@ class NightBot(commands.Bot):
         log_channel: discord.TextChannel = self.get_channel_from_name(name='log')
         return init_pairs
 
-    async def get_all_messages(self, channel_id: int):
-        channel = self.get_channel(channel_id)
+    async def get_all_messages(self, name_int):
+        if type(name_int) == str: channel = self.get_channel_from_name(name_int)
+        elif type(name_int) == int: channel = self.get_channel(name_int)
+        else: return []
+
         return await channel.history(limit=500).flatten()
 
     def get_guild_from_name(self, guild_name=None):
