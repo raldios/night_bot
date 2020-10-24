@@ -16,7 +16,7 @@ def init_logger(log_filename):
     formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
 
     file_handler = RotatingFileHandler(log_location, mode='a', maxBytes=2 * MB_SCALAR,
-                                       backupCount=1, encoding='utf-8', delay=False)
+                                       backupCount=0, encoding='utf-8', delay=False)
 
     file_handler.setLevel(logging.DEBUG)
     file_handler.setFormatter(formatter)
