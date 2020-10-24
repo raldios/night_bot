@@ -9,6 +9,9 @@ import logging
 number_emoji_uni = [b'1\\u20e3', b'2\\u20e3', b'3\\u20e3', b'4\\u20e3',
                     b'5\\u20e3', b'6\\u20e3', b'7\\u20e3', b'8\\u20e3', b'9\\u20e3']
 
+number_emoji_txt = ['1\u20e3', '2\u20e3', '3\u20e3', '4\u20e3',
+                    '5\u20e3', '6\u20e3', '7\u20e3', '8\u20e3', '9\u20e3']
+
 
 class RolesCog(commands.Cog):
 
@@ -28,14 +31,16 @@ class RolesCog(commands.Cog):
         messages = await self.night_bot.get_all_messages(self.roles_channel_id)
 
         for message in messages:
-            lines = message.content.split()
+            lines = message.content.split('\n')
             emoji_index = 0
             for line in lines:
                 if line[:2] == '**': continue
+                line = line[4:]
 
                 role = self.night_bot.get_role_from_name(line)
                 if role:
-                    await message.add_reaction(number_emoji_uni[emoji_index])
+                    logging.info(str(role) + ' found')
+                    await message.add_reaction(number_emoji_txt[emoji_index])
                     emoji_index += 1
                 else:
                     log_channel = self.night_bot.get_channel(self.night_bot.log_channel_id)

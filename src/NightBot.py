@@ -59,10 +59,10 @@ class NightBot(commands.Bot):
             self.skip_reaction_remove = True
             return
 
-        lines = message.content.split()[1:]
+        lines = message.content.split('\n')[1:]
         index = number_emoji_uni.index(added_emoji_uni)
+        role = self.get_role_from_name(lines[index][4:])
 
-        role = self.get_role_from_name(lines[index])
         await member.add_roles(role)
         logging.info(f'role {role.name} added to {member.nick}')
 
@@ -77,10 +77,10 @@ class NightBot(commands.Bot):
         member = self.get_guild_from_name().get_member(payload.user_id)
         added_emoji_uni = payload.emoji.name.encode('unicode-escape')
 
-        lines = message.content.split()[1:]
+        lines = message.content.split('\n')[1:]
         index = number_emoji_uni.index(added_emoji_uni)
+        role = self.get_role_from_name(lines[index][4:])
 
-        role = self.get_role_from_name(lines[index])
         if not role: return
         await member.remove_roles(role)
         logging.info(f'role {role} removed from {member.nick}')
