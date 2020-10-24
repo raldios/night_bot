@@ -2,9 +2,10 @@
 import logging
 import discord
 from discord.ext import commands
+from emoji import emojize
 
 from cogs.FactsCog import FactsCog
-from cogs.RolesCog import RolesCog
+from cogs.RolesCog import RolesCog, number_emoji_uni
 
 INIT_CHANNEL_ID = 765277853151395910
 
@@ -27,6 +28,9 @@ class NightBot(commands.Bot):
         self.add_cog(self.facts_cog)
         self.add_cog(self.roles_cog)
 
+        # flags
+        self.skip_reaction_remove = False
+
         self.run(token, bot=True, reconnect=True)
 
     async def on_ready(self):
@@ -44,31 +48,48 @@ class NightBot(commands.Bot):
         self.roles_cog.roles_channel_id = int(init_pairs['roles'])
 
     async def on_raw_reaction_add(self, payload):
-        if self.user.id == payload.user_id: return
-        elif not payload.channel_id == self.roles_cog.roles_channel_id: return
-        channel = self.get_channel(payload.channel_id)
-        message = await channel.fetch_message(payload.message_id)
-        member = self.get_guild_from_name().get_member(payload.user_id)
-        trans_this = discord.utils.get(self.emojis, name='transThis')
-        added_emoji = discord.utils.get(self.emojis, name=payload.emoji.name)
-
-        if not added_emoji == trans_this:
-            await message.remove_reaction(added_emoji, member)
-            return
-
-        role = self.get_role_from_name(message.content)
-        await member.add_roles(role)
-        logging.info(f'role {message.content} added to {member.nick}')
-
-    async def on_raw_reaction_remove(self, payload):
         if not payload.channel_id == self.roles_cog.roles_channel_id: return
         channel = self.get_channel(payload.channel_id)
         message = await channel.fetch_message(payload.message_id)
         member = self.get_guild_from_name().get_member(payload.user_id)
+        added_emoji_uni = payload.emoji.name.encode('unicode-escape')
 
-        role = self.get_role_from_name(message.content)
+        if added_emoji_uni not in number_emoji_uni:
+            await message.remove_reaction(payload.emoji, member)
+            self.skip_reaction_remove = True
+            return
+
+        lines = message.content.split()[1:]
+        index = number_emoji_uni.index(added_emoji_uni)
+
+        role = self.get_role_from_name(lines[index])
+        await member.add_roles(role)
+        logging.info(f'role {role.name} added to {member.nick}')
+
+    async def on_raw_reaction_remove(self, payload):
+        if self.skip_reaction_remove:
+            self.skip_reaction_remove = False
+            return
+
+        if not payload.channel_id == self.roles_cog.roles_channel_id: return
+        channel = self.get_channel(payload.channel_id)
+        message = await channel.fetch_message(payload.message_id)
+        member = self.get_guild_from_name().get_member(payload.user_id)
+        added_emoji_uni = payload.emoji.name.encode('unicode-escape')
+
+        lines = message.content.split()[1:]
+        index = number_emoji_uni.index(added_emoji_uni)
+
+        role = self.get_role_from_name(lines[index])
+        if not role: return
         await member.remove_roles(role)
-        logging.info(f'role {message.content} removed from {member.nick}')
+        logging.info(f'role {role} removed from {member.nick}')
+
+    async def get_emoji_from_name(self, name: str, custom=True):
+        if custom: emoji = discord.utils.get(self.emojis, name=name)
+
+    async def get_emoji_code_from_name(self, name: str):
+        return emojize(':one:', use_aliases=True).encode('unicode-escape')
 
     async def get_bot_init_pairs(self):
         init_pairs = dict()
