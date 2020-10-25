@@ -13,9 +13,7 @@ INIT_CHANNEL_ID = 765277853151395910
 class NightBot(commands.Bot):
 
     def __init__(self, token, guild_name):
-        intents = discord.Intents.default()
-        intents.members = True
-        commands.Bot.__init__(self, ';', guild_subscriptions=True, intents=intents)
+        commands.Bot.__init__(self, ';', guild_subscriptions=True)
 
         # attributes
         self.token = token
