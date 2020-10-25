@@ -51,7 +51,12 @@ class NightBot(commands.Bot):
         if not payload.channel_id == self.roles_cog.roles_channel_id: return
         channel = self.get_channel(payload.channel_id)
         message = await channel.fetch_message(payload.message_id)
-        member = self.get_guild_from_name().get_member(payload.user_id)
+        guild = self.get_guild_from_name()
+        member = guild.get_member(payload.user_id)
+        logging.info(' ---- guild: ' + str(guild))
+        logging.info(' ---- payload.user_id: ' + str(payload.user_id))
+        logging.info(' ---- member: ' + str(member))
+
         added_emoji_uni = payload.emoji.name.encode('unicode-escape')
 
         if added_emoji_uni not in number_emoji_uni:
