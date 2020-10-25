@@ -52,3 +52,10 @@ class RolesCog(commands.Cog):
                     x = discord.utils.get(self.night_bot.emojis, name='rooScream')
                     logging.info(x)
                     await message.add_reaction(x)
+
+    @commands.command(name='get;members')
+    async def print_members(self, ctx):
+        guild = self.night_bot.get_guild_from_name()
+
+        for member in guild.members:
+            logging.info(member)
