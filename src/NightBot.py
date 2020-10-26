@@ -7,12 +7,10 @@ from emoji import emojize
 from cogs.FactsCog import FactsCog
 from cogs.RolesCog import RolesCog, number_emoji_uni
 
-INIT_CHANNEL_ID = 765277853151395910
-
 
 class NightBot(commands.Bot):
 
-    def __init__(self, token, guild_name):
+    def __init__(self, token, guild_name, init_channel_id):
         intents = discord.Intents.default()
         intents.members = True
         commands.Bot.__init__(self, ';', guild_subscriptions=True, intents=intents)
@@ -20,6 +18,7 @@ class NightBot(commands.Bot):
         # attributes
         self.token = token
         self.guild_name = guild_name
+        self.init_channel_id = init_channel_id
         self.log_channel_id = None
 
         # cogs
@@ -96,7 +95,7 @@ class NightBot(commands.Bot):
     async def get_bot_init_pairs(self):
         init_pairs = dict()
         log = 'init pairs read\n'
-        for message in await self.get_all_messages(INIT_CHANNEL_ID):
+        for message in await self.get_all_messages(self.init_channel_id):
             pair = message.content.split()
             log += f'`{message.content}`\n'
             init_pairs[pair[0]] = pair[1]
