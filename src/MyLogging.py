@@ -10,6 +10,7 @@ def init_logger(log_filename):
     cwd = Path.cwd()
     log_location = cwd.parent / log_filename
 
+    logging.getLogger('discord').setLevel(logging.WARNING)
     logger = logging.getLogger()
     logger.setLevel(logging.DEBUG)
 
