@@ -18,7 +18,7 @@ class NightBot(commands.Bot):
         # attributes
         self.token = token
         self.guild_name = guild_name
-        self.init_channel_id = init_channel_id
+        self.init_channel_id = int(init_channel_id)
         self.log_channel_id = None
 
         # cogs
