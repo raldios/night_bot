@@ -100,7 +100,6 @@ class NightBot(commands.Bot):
             log += f'`{message.content}`\n'
             init_pairs[pair[0]] = pair[1]
 
-        log_channel: discord.TextChannel = self.get_channel_from_name(name='log')
         return init_pairs
 
     async def get_all_messages(self, name_int):
