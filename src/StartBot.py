@@ -13,4 +13,4 @@ TOKEN = os.getenv('DISCORD_TOKEN')
 GUILD = os.getenv('DISCORD_GUILD')
 INIT_CHANNEL_ID = os.getenv('INIT_CHANNEL_ID')
 
-client = NightBot(TOKEN, GUILD, INIT_CHANNEL_ID)
+client = NightBot(TOKEN, GUILD, INIT_CHANNEL_ID, my_logger)

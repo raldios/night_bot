@@ -39,4 +39,6 @@ class MyLogger:
         logger.info('Logger initialized')
 
     async def debug(self, message: str):
+        log_channel = self.bot.get_log_channel()
+
         logging.debug(message)

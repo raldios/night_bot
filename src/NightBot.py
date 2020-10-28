@@ -6,11 +6,12 @@ from emoji import emojize
 
 from cogs.FactsCog import FactsCog
 from cogs.RolesCog import RolesCog, number_emoji_uni
+from MyLogger import MyLogger
 
 
 class NightBot(commands.Bot):
 
-    def __init__(self, token, guild_name, init_channel_id):
+    def __init__(self, token, guild_name, init_channel_id, my_logger):
         intents = discord.Intents.default()
         intents.members = True
         commands.Bot.__init__(self, ';', guild_subscriptions=True, intents=intents)
@@ -20,6 +21,10 @@ class NightBot(commands.Bot):
         self.guild_name = guild_name
         self.init_channel_id = int(init_channel_id)
         self.log_channel_id = None
+        self.log: MyLogger = my_logger
+
+        # give logger an instance of bot to send messages
+        self.log.bot = self
 
         # cogs
         self.facts_cog = FactsCog(self)
@@ -127,6 +132,9 @@ class NightBot(commands.Bot):
         if name is not None:
             channel = discord.utils.get(guild.text_channels, name=name)
             return channel
+
+    def get_log_channel(self):
+        return self.get_channel(self.init_channel_id)
 
     def get_category_from_name(self, category_name):
         guild: discord.Guild = self.get_guild_from_name()
