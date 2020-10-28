@@ -2,6 +2,7 @@
 import logging
 from logging.handlers import RotatingFileHandler
 from pathlib import Path
+from discord import TextChannel
 
 MB_SCALAR = 1024 * 1024
 
@@ -38,7 +39,30 @@ class MyLogger:
 
         logger.info('Logger initialized')
 
-    async def debug(self, message: str):
-        log_channel = self.bot.get_log_channel()
-
+    @staticmethod
+    async def debug(message: str):
         logging.debug(message)
+
+    async def info(self, message: str):
+        log_channel: TextChannel = self.bot.get_log_channel()
+
+        logging.info(message)
+        await log_channel.send(message)
+
+    async def warning(self, message: str):
+        log_channel: TextChannel = self.bot.get_log_channel()
+
+        logging.warning(message)
+        await log_channel.send(message + '<@82331305387241472>')
+
+    async def error(self, message: str):
+        log_channel: TextChannel = self.bot.get_log_channel()
+
+        logging.error(message)
+        await log_channel.send(message + '<@82331305387241472>')
+
+    async def critical(self, message: str):
+        log_channel: TextChannel = self.bot.get_log_channel()
+
+        logging.critical(message)
+        await log_channel.send(message + '<@82331305387241472>')
