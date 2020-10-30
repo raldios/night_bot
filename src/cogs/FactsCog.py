@@ -20,7 +20,7 @@ class FactsCog(commands.Cog):
 
     async def get_random_fact(self, fact_category: str):
         facts = await self.bot.get_all_messages(fact_category)
-        rand_index = randrange(0, len(facts) - 1)
+        rand_index = randrange(0, len(facts))
         return facts[rand_index].content
 
     def validate_fact_category(self, fact_category):

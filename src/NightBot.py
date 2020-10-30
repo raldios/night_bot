@@ -6,7 +6,6 @@ from emoji import emojize
 
 from cogs.FactsCog import FactsCog
 from cogs.RolesCog import RolesCog, number_emoji_uni
-from StartBot import logger
 
 
 class NightBot(commands.Bot):
@@ -21,9 +20,6 @@ class NightBot(commands.Bot):
         self.guild_name = guild_name
         self.init_channel_id = int(init_channel_id)
         self.log_channel_id = None
-
-        # give logger an instance of bot to send messages
-        logger.bot = self
 
         # cogs
         self.facts_cog = FactsCog(self)
