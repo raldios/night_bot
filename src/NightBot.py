@@ -10,7 +10,7 @@ from cogs.RolesCog import RolesCog, number_emoji_uni
 
 class NightBot(commands.Bot):
 
-    def __init__(self, token, guild_name, init_channel_id):
+    def __init__(self, token, guild_name, init_channel_id, fact_cooldown):
         intents = discord.Intents.default()
         intents.members = True
         commands.Bot.__init__(self, ';', guild_subscriptions=True, intents=intents)
@@ -22,7 +22,7 @@ class NightBot(commands.Bot):
         self.log_channel_id = None
 
         # cogs
-        self.facts_cog = FactsCog(self)
+        self.facts_cog = FactsCog(self, fact_cooldown)
         self.roles_cog = RolesCog(self)
 
         # add cogs

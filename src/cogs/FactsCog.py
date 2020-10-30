@@ -6,13 +6,12 @@ from discord.ext import commands
 from random import randrange
 from asyncio import sleep
 
-WAIT_COOLDOWN = 60
-
 
 class FactsCog(commands.Cog):
 
-    def __init__(self, bot):
+    def __init__(self, bot, fact_cooldown):
         self.bot = bot
+        self.fact_cooldown = fact_cooldown
         self.fact_ready = True
 
     def get_fact_channels(self):
@@ -38,7 +37,7 @@ class FactsCog(commands.Cog):
         else:
             await ctx.send(await self.get_random_fact(fact_category))
             self.fact_ready = False
-            await sleep(WAIT_COOLDOWN)
+            await sleep(self.fact_cooldown)
             self.fact_ready = True
 
     @commands.command(name='factcount')
