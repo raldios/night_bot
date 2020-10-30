@@ -4,7 +4,7 @@ import discord
 from discord.ext import commands
 from emoji import emojize
 
-from cogs.FactsCog import FactsCog
+from cogs.ItemsCog import ItemsCog
 from cogs.RolesCog import RolesCog, number_emoji_uni
 
 
@@ -22,7 +22,7 @@ class NightBot(commands.Bot):
         self.log_channel_id = None
 
         # cogs
-        self.facts_cog = FactsCog(self, fact_cooldown)
+        self.facts_cog = ItemsCog(self, fact_cooldown)
         self.roles_cog = RolesCog(self)
 
         # add cogs
