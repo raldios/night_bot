@@ -11,7 +11,7 @@ class FactsCog(commands.Cog):
 
     def __init__(self, bot, fact_cooldown):
         self.bot = bot
-        self.fact_cooldown = fact_cooldown
+        self.fact_cooldown = int(fact_cooldown)
         self.fact_ready = True
 
     def get_fact_channels(self):
