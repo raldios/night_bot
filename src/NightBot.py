@@ -6,11 +6,13 @@ from emoji import emojize
 
 from cogs.ItemsCog import ItemsCog
 from cogs.RolesCog import RolesCog, number_emoji_uni
+from MyLogger import MyLogger
 
 
 class NightBot(commands.Bot):
 
-    def __init__(self, token, guild_name, init_channel_id, fact_cooldown):
+    def __init__(self, token, guild_name, init_channel_id, fact_cooldown, log_filename):
+        self.logger = MyLogger(log_filename)
         intents = discord.Intents.default()
         intents.members = True
         commands.Bot.__init__(self, ';', guild_subscriptions=True, intents=intents)
