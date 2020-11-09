@@ -5,6 +5,7 @@ import discord
 from discord.ext import commands
 from random import randrange
 from asyncio import sleep
+import logging
 
 
 class ItemsCog(commands.Cog):
@@ -30,6 +31,10 @@ class ItemsCog(commands.Cog):
 
     @commands.command(name='get')
     async def get(self, ctx: discord.ext.commands.Context, item_category=None, *args):
+        if item_category in self.bot.aliases.keys():
+            logging.info(f'{item_category} aliased to {self.bot.aliases[item_category]}')
+            item_category = self.bot.aliases[item_category]
+
         if not self.item_ready:
             await ctx.send('Please wait before trying again. :)')
         elif not self.validate_item_category(item_category):

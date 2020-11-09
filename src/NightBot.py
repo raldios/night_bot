@@ -22,6 +22,7 @@ class NightBot(commands.Bot):
         self.guild_name = guild_name
         self.init_channel_id = int(init_channel_id)
         self.log_channel_id = None
+        self.aliases = dict()
 
         # cogs
         self.facts_cog = ItemsCog(self, fact_cooldown)
@@ -43,12 +44,17 @@ class NightBot(commands.Bot):
         init_pairs = await self.get_bot_init_pairs()
         log_channel = self.get_channel(int(init_pairs['log']))
         roles_channel = self.get_channel(int(init_pairs['roles']))
+        alias_channel = self.get_channel(int(init_pairs['alias']))
 
         logging.info(f'{log_channel.id} : {log_channel.name}')
         logging.info(f'{roles_channel.id} : {roles_channel.name}')
+        logging.info(f'{alias_channel.id} : {alias_channel.name}')
 
         self.log_channel_id = int(init_pairs['log'])
         self.roles_cog.roles_channel_id = int(init_pairs['roles'])
+
+        for message in await self.get_all_messages(int(init_pairs['alias'])):
+            self.aliases[message.content.split()[0]] = message.content.split()[1]
 
     async def on_raw_reaction_add(self, payload):
         if not payload.channel_id == self.roles_cog.roles_channel_id: return

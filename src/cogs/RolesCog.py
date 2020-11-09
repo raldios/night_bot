@@ -44,4 +44,4 @@ class RolesCog(commands.Cog):
                     emoji_index += 1
                 else:
                     await self.bot.log.warning(f'role `{line}` '
-                                                     f'not found during roles initialization <@82331305387241472>')
+                                               f'not found during roles initialization <@82331305387241472>')
