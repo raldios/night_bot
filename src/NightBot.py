@@ -12,7 +12,7 @@ from MyLogger import MyLogger
 class NightBot(commands.Bot):
 
     def __init__(self, token, guild_name, init_channel_id, fact_cooldown, log_filename):
-        self.logger = MyLogger(log_filename)
+        self.log = MyLogger(log_filename)
         intents = discord.Intents.default()
         intents.members = True
         commands.Bot.__init__(self, ';', guild_subscriptions=True, intents=intents)
@@ -67,7 +67,7 @@ class NightBot(commands.Bot):
         role = self.get_role_from_name(lines[index][4:])
 
         await member.add_roles(role)
-        logging.info(f'role {role.name} added to {member.nick}')
+        await self.log.info(f'role {role.name} added to {member.nick}')
 
     async def on_raw_reaction_remove(self, payload):
         if self.skip_reaction_remove:
@@ -86,7 +86,7 @@ class NightBot(commands.Bot):
 
         if not role: return
         await member.remove_roles(role)
-        logging.info(f'role {role} removed from {member.nick}')
+        await self.log.info(f'role {role} removed from {member.nick}')
 
     async def get_emoji_from_name(self, name: str, custom=True):
         if custom: emoji = discord.utils.get(self.emojis, name=name)
