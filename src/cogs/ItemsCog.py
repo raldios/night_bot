@@ -52,3 +52,9 @@ class ItemsCog(commands.Cog):
         else:
             items = await self.bot.get_all_messages(item_category)
             await ctx.send(f'There are {len(items)} {item_category} facts!')
+
+    @commands.command(name='add')
+    async def add(self, ctx: discord.ext.commands.Context, category=None, *args):
+        if category is None:
+            logging.info(f'')
+        
