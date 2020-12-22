@@ -11,7 +11,7 @@ from MyLogger import MyLogger
 
 class NightBot(commands.Bot):
 
-    def __init__(self, token, guild_name, init_channel_id, fact_cooldown, log_filename):
+    def __init__(self, token, guild_name, init_channel_id, fact_cooldown, add_cooldown, log_filename):
         self.log = MyLogger(log_filename)
         intents = discord.Intents.default()
         intents.members = True
@@ -25,7 +25,7 @@ class NightBot(commands.Bot):
         self.aliases = dict()
 
         # cogs
-        self.facts_cog = ItemsCog(self, fact_cooldown)
+        self.facts_cog = ItemsCog(self, fact_cooldown, add_cooldown)
         self.roles_cog = RolesCog(self)
 
         # add cogs
