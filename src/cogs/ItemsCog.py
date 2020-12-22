@@ -72,3 +72,6 @@ class ItemsCog(commands.Cog):
             await ctx.send('All quotes must start and end with three backticks. (```)  :)')
         else:
             await item_channel.send(item_str)
+            self.add_ready = False
+            await sleep(self.add_cooldown)
+            self.add_ready = True
