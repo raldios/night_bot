@@ -64,14 +64,22 @@ class ItemsCog(commands.Cog):
             await ctx.send('Please provide a valid category. :)')
 
         item_str = " ".join(item_words)
+        new_str = str()
+
+        for char in item_str:
+            if char == '"': new_str += '\\'
+            new_str += char
+
         item_channel: discord.TextChannel = self.bot.get_channel_from_name(category)
 
-        properly_formatted = (item_str[:3] == '```' and item_str[-3:] == '```')
+        properly_formatted = (new_str[:3] == '```' and new_str[-3:] == '```')
 
-        if category == 'quote' and not properly_formatted:
+        if not self.add_ready:
+            await ctx.send('Please wait 5 minutes before trying again. :)')
+        elif category == 'quote' and not properly_formatted:
             await ctx.send('All quotes must start and end with three backticks. (```)  :)')
         else:
-            await item_channel.send(item_str)
+            await item_channel.send(new_str)
             self.add_ready = False
             await sleep(self.add_cooldown)
             self.add_ready = True
