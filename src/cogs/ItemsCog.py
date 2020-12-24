@@ -10,12 +10,10 @@ import logging
 
 class ItemsCog(commands.Cog):
 
-    def __init__(self, bot, fact_cooldown, add_cooldown):
+    def __init__(self, bot, fact_cooldown):
         self.bot = bot
         self.fact_cooldown = int(fact_cooldown)
-        self.add_cooldown = int(add_cooldown)
         self.get_ready = True
-        self.add_ready = True
 
     def get_item_channels(self):
         return self.bot.get_text_channels_from_category_name('item channels')
@@ -54,32 +52,3 @@ class ItemsCog(commands.Cog):
         else:
             items = await self.bot.get_all_messages(item_category)
             await ctx.send(f'There are {len(items)} {item_category} facts!')
-
-    @commands.command(name='add')
-    async def add(self, ctx: discord.ext.commands.Context, category=None, *item_words):
-        valid_categories = [category.name for category in self.bot.get_text_channels_from_category_name('item channels')]
-        valid_categories.remove('katie')
-
-        if category is None or category not in valid_categories:
-            await ctx.send('Please provide a valid category. :)')
-
-        item_str = " ".join(item_words)
-        new_str = str()
-
-        for char in item_str:
-            if char == '"': new_str += '\\'
-            new_str += char
-
-        item_channel: discord.TextChannel = self.bot.get_channel_from_name(category)
-
-        properly_formatted = (new_str[:3] == '```' and new_str[-3:] == '```')
-
-        if not self.add_ready:
-            await ctx.send('Please wait 5 minutes before trying again. :)')
-        elif category == 'quote' and not properly_formatted:
-            await ctx.send('All quotes must start and end with three backticks. (```)  :)')
-        else:
-            await item_channel.send(new_str)
-            self.add_ready = False
-            await sleep(self.add_cooldown)
-            self.add_ready = True

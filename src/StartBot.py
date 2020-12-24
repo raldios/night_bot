@@ -11,5 +11,4 @@ client = NightBot(os.getenv('DISCORD_TOKEN'),
                   os.getenv('DISCORD_GUILD'),
                   os.getenv('INIT_CHANNEL_ID'),
                   os.getenv('FACT_COOLDOWN'),
-                  os.getenv('ADD_COOLDOWN'),
                   os.getenv('LOG_FILENAME'))
