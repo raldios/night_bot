@@ -9,8 +9,8 @@ MB_SCALAR = 1024 * 1024
 
 class MyLogger:
 
-    def __init__(self, log_filename):
-        self.bot = None
+    def __init__(self, log_filename, bot):
+        self.bot = bot
 
         self.init_logger(log_filename)
 

@@ -12,10 +12,10 @@ from MyLogger import MyLogger
 class NightBot(commands.Bot):
 
     def __init__(self, token, guild_name, init_channel_id, fact_cooldown, log_filename):
-        self.log = MyLogger(log_filename)
         intents = discord.Intents.default()
         intents.members = True
         commands.Bot.__init__(self, ';', guild_subscriptions=True, intents=intents)
+        self.log = MyLogger(log_filename, self)
 
         # attributes
         self.token = token
