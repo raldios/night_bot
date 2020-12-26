@@ -137,7 +137,7 @@ class NightBot(commands.Bot):
             return channel
 
     def get_log_channel(self):
-        return self.get_channel(self.init_channel_id)
+        return self.get_channel(self.log_channel_id)
 
     def get_category_from_name(self, category_name):
         guild: discord.Guild = self.get_guild_from_name()
