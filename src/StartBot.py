@@ -6,9 +6,13 @@ from pathlib import Path
 
 from NightBot import NightBot
 
+if len(argv) < 2:
+    print('CRITICAL - ENV FILE NOT PROVIDED, EXITING')
+    exit()
+
 env_path = Path(str(argv[1]))
 if not env_path.exists():
-    print('CRITICAL - ENV FILE NOT FOUND, EXITING')
+    print('CRITICAL - ENV FILE DOES NOT EXIST, EXITING')
     exit()
 
 load_dotenv(env_path)
