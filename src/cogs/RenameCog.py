@@ -8,12 +8,7 @@ from asyncio import sleep
 import logging
 
 
-def concat_args(*args):
-    text = str()
-    for arg in args:
-        text = text + arg
 
-    return text
 
 
 class RenameCog(commands.Cog):
@@ -32,19 +27,25 @@ class RenameCog(commands.Cog):
         await ctx.send(f'toggle_rename set to {status}.')
 
     @commands.command(name='rename')
-    async def rename(self, ctx: discord.ext.commands.Context, name=None, *args):
+    async def rename(self, ctx: discord.ext.commands.Context, *args):
         if self.rename_disabled:
             await ctx.send('Command `rename` is currently disabled.')
 
-        if not name:
+        if not len(args):
             await ctx.send('Please give a name to rename the channel.')
+            await self.bot.log.warning(
+                f'{ctx.message.author} tried to rename a channel without giving the new name.')
             return
+        else:
+            name = ' '.join(args)
 
-        channel: discord.VoiceChannel = ctx.message.author.voice.voice_channel
-        if not channel:
+        try:
+            channel: discord.VoiceChannel = ctx.message.author.voice.channel
+        except:
+            await self.bot.log.warning(
+                f'{ctx.message.author} tried to rename a channel while not connected to a voice channel.')
             await ctx.send('Please connect to the voice channel you want to rename.')
             return
 
-        name = concat_args(args)
-        channel.name = name
-        await ctx.send(f'Channel renamed to `{name}`.')
+        await channel.edit(name=name)
+        await self.bot.log.info(f'{ctx.message.author} renamed voice channel {channel.name} to {name}.')

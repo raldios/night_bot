@@ -59,6 +59,8 @@ class NightBot(commands.Bot):
         for message in await self.get_all_messages(int(init_pairs['alias'])):
             self.aliases[message.content.split()[0]] = message.content.split()[1]
 
+        logging.info('Startup Complete')
+
     async def on_raw_reaction_add(self, payload):
         if not payload.channel_id == self.roles_cog.roles_channel_id: return
         channel = self.get_channel(payload.channel_id)
