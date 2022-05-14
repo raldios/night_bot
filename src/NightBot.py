@@ -6,6 +6,7 @@ from emoji import emojize
 
 from cogs.ItemsCog import ItemsCog
 from cogs.RolesCog import RolesCog, number_emoji_uni
+from cogs.RenameCog import RenameCog
 from MyLogger import MyLogger
 
 
@@ -27,10 +28,12 @@ class NightBot(commands.Bot):
         # cogs
         self.facts_cog = ItemsCog(self, fact_cooldown)
         self.roles_cog = RolesCog(self)
+        self.rename_cog = RenameCog(self)
 
         # add cogs
         self.add_cog(self.facts_cog)
         self.add_cog(self.roles_cog)
+        self.add_cog(self.rename_cog)
 
         # flags
         self.skip_reaction_remove = False

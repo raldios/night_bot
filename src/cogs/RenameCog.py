@@ -18,7 +18,7 @@ def concat_args(*args):
 
 class RenameCog(commands.Cog):
 
-    def __init__(self, bot, rename):
+    def __init__(self, bot):
         self.bot = bot
         self.rename_disabled = False
 
