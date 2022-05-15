@@ -3,12 +3,6 @@
 # imports
 import discord
 from discord.ext import commands
-from random import randrange
-from asyncio import sleep
-import logging
-
-
-
 
 
 class RenameCog(commands.Cog):
@@ -24,16 +18,18 @@ class RenameCog(commands.Cog):
         if self.rename_disabled: status = "disabled"
         else: status = "enabled"
 
-        await ctx.send(f'toggle_rename set to {status}.')
+        await ctx.send(f'rename command set to {status}.')
 
     @commands.command(name='rename')
     async def rename(self, ctx: discord.ext.commands.Context, *args):
+
         if self.rename_disabled:
             await ctx.send('Command `rename` is currently disabled.')
+            return
 
-        if not len(args):
+        elif not len(args):
             await ctx.send('Please give a name to rename the channel.')
-            await self.bot.log.warning(
+            await self.bot.log.info(
                 f'{ctx.message.author} tried to rename a channel without giving the new name.')
             return
         else:
@@ -41,8 +37,8 @@ class RenameCog(commands.Cog):
 
         try:
             channel: discord.VoiceChannel = ctx.message.author.voice.channel
-        except:
-            await self.bot.log.warning(
+        except AttributeError:
+            await self.bot.log.info(
                 f'{ctx.message.author} tried to rename a channel while not connected to a voice channel.')
             await ctx.send('Please connect to the voice channel you want to rename.')
             return

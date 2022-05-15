@@ -26,12 +26,12 @@ class NightBot(commands.Bot):
         self.aliases = dict()
 
         # cogs
-        self.facts_cog = ItemsCog(self, fact_cooldown)
+        self.items_cog = ItemsCog(self, fact_cooldown)
         self.roles_cog = RolesCog(self)
         self.rename_cog = RenameCog(self)
 
         # add cogs
-        self.add_cog(self.facts_cog)
+        self.add_cog(self.items_cog)
         self.add_cog(self.roles_cog)
         self.add_cog(self.rename_cog)
 

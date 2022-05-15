@@ -47,22 +47,22 @@ class MyLogger:
         log_channel: TextChannel = self.bot.get_log_channel()
 
         logging.info(message)
-        await log_channel.send(message)
+        await log_channel.send('```INFO: ' + message + '```')
 
     async def warning(self, message: str):
         log_channel: TextChannel = self.bot.get_log_channel()
 
         logging.warning(message)
-        await log_channel.send(message + '<@82331305387241472>')
+        await log_channel.send('```WARNING: ' + message + '```' + '<@82331305387241472>')
 
     async def error(self, message: str):
         log_channel: TextChannel = self.bot.get_log_channel()
 
         logging.error(message)
-        await log_channel.send(message + '<@82331305387241472>')
+        await log_channel.send('```ERROR: ' + message + '```' + '<@82331305387241472>')
 
     async def critical(self, message: str):
         log_channel: TextChannel = self.bot.get_log_channel()
 
         logging.critical(message)
-        await log_channel.send(message + '<@82331305387241472>')
+        await log_channel.send('```CRITICAL: ' + message + '```' + '<@82331305387241472>')
