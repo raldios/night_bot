@@ -6,8 +6,8 @@ import logging
 from NightBot import NightBot
 
 try:
-    args = dotenv_values(argv[1]).values()
-    client = NightBot(*dotenv_values(argv[1]).values())
+    startup_dict = dotenv_values(argv[1])
+    client = NightBot(startup_dict)
 except IndexError as ie:
     logging.critical(ie)
     logging.critical('No .env file provided, please provide .env location as first argument.')
