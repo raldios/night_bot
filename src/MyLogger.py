@@ -11,7 +11,6 @@ class MyLogger:
 
     def __init__(self, log_filename, bot):
         self.bot = bot
-
         self.init_logger(log_filename)
 
     @staticmethod

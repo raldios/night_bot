@@ -12,21 +12,21 @@ from MyLogger import MyLogger
 
 class NightBot(commands.Bot):
 
-    def __init__(self, token, guild_name, init_channel_id, fact_cooldown, log_filename):
+    def __init__(self, values):
         intents = discord.Intents.default()
         intents.members = True
         commands.Bot.__init__(self, ';', guild_subscriptions=True, intents=intents)
-        self.log = MyLogger(log_filename, self)
+        self.log = MyLogger(values['LOG_FILENAME'], self)
 
         # attributes
-        self.token = token
-        self.guild_name = guild_name
-        self.init_channel_id = int(init_channel_id)
+        self.token = values['DISCORD_TOKEN']
+        self.guild_name = values['DISCORD_GUILD']
+        self.init_channel_id = int(values['INIT_CHANNEL_ID'])
         self.log_channel_id = None
         self.aliases = dict()
 
         # cogs
-        self.items_cog = ItemsCog(self, fact_cooldown)
+        self.items_cog = ItemsCog(self, values['FACT_COOLDOWN'])
         self.roles_cog = RolesCog(self)
         self.rename_cog = RenameCog(self)
 
@@ -38,7 +38,7 @@ class NightBot(commands.Bot):
         # flags
         self.skip_reaction_remove = False
 
-        self.run(token, bot=True, reconnect=True)
+        self.run(self.token, bot=True, reconnect=True)
 
     async def on_ready(self):
         logging.info('Connected Servers:')
