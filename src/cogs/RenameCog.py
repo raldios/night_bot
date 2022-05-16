@@ -22,18 +22,11 @@ class RenameCog(commands.Cog):
 
     @commands.command(name='rename')
     async def rename(self, ctx: discord.ext.commands.Context, *args):
+        if await self.disabled_check(ctx): return
 
-        if self.rename_disabled:
-            await ctx.send('Command `rename` is currently disabled.')
-            return
-
-        elif not len(args):
-            await ctx.send('Please give a name to rename the channel.')
-            await self.bot.log.info(
-                f'{ctx.message.author} tried to rename a channel without giving the new name.')
-            return
-        else:
+        elif await self.length_check(ctx, args, 1):
             name = ' '.join(args)
+        else: return
 
         try:
             channel: discord.VoiceChannel = ctx.message.author.voice.channel
@@ -45,3 +38,22 @@ class RenameCog(commands.Cog):
 
         await channel.edit(name=name)
         await self.bot.log.info(f'{ctx.message.author} renamed voice channel {channel.name} to {name}.')
+
+    async def disabled_check(self, ctx):
+        if self.rename_disabled:
+            await ctx.send('Command `rename` is currently disabled.')
+            return True
+        else:
+            return False
+
+    async def length_check(self, ctx, items_list, min_length):
+        if len(items_list) < min_length:
+            await ctx.send('Please give a name to rename the channel.')
+            await self.bot.log.info(
+                f'{ctx.message.author} tried to rename a channel without giving the new name.')
+            return False
+        else:
+            return True
+
+
+

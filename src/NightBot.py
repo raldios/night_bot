@@ -41,8 +41,8 @@ class NightBot(commands.Bot):
         self.run(self.token, bot=True, reconnect=True)
 
     async def on_ready(self):
-        logging.info('Connected Servers:')
-        for guild in self.guilds: logging.info(guild)
+        guilds_str = self.concat_names(self.guilds)
+        logging.info('Connected Servers: ' + guilds_str)
 
         init_pairs = await self.get_bot_init_pairs()
         log_channel = self.get_channel(int(init_pairs['log']))
@@ -151,3 +151,10 @@ class NightBot(commands.Bot):
     def get_text_channels_from_category_name(self, category_name):
         category: discord.CategoryChannel = self.get_category_from_name(category_name)
         return category.text_channels
+
+    @staticmethod
+    def concat_names(items):
+        items_list = list()
+        for item in items:
+            items_list.append(item.name)
+        return ', '.join(items_list)
