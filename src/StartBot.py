@@ -1,8 +1,6 @@
 # StartBot.py
-import os
 from sys import argv
-from dotenv import load_dotenv, dotenv_values, find_dotenv
-from pathlib import Path
+from dotenv import dotenv_values
 import logging
 
 from NightBot import NightBot
